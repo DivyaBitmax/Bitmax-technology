@@ -24,6 +24,8 @@ connectDB();
 
 app.use("/api/payments", require("./routes/paymentRoutes"));
 app.use("/api/admin", require("./routes/authRoutes"));
+app.use("/api/payments", require("./routes/paymentRoutes"));
+
 
 
 //login+register;
