@@ -8,50 +8,23 @@ const config   = require("../config/config");
 const router = express.Router();
 
 /* --------------------  ADMIN LOGIN  -------------------- */
-// router.post("/login", async (req, res) => {
-//   const { email, password } = req.body;
-
-//   const admin = await Admin.findOne({ email });
-//   if (!admin) {
-//     return res.status(401).json({ success: false, message: "Invalid credentials" });
-//   }
-
-//   const isMatch = await bcrypt.compare(password, admin.password);
-//   if (!isMatch) {
-//     return res.status(401).json({ success: false, message: "Invalid credentials" });
-//   }
-
-//   //7 day token
-//   const token = jwt.sign({ id: admin._id }, config.JWT_SECRET, { expiresIn: "7d" });
-
-//   /* Return token plain; client must add the Bearer prefix when sending it back */
-//   res.json({ success: true, token });
-// });
-
-
-
-
 router.post("/login", async (req, res) => {
-  console.log(" Login attempt with payload:", req.body);
+  const { email, password } = req.body;
 
-  const admin = await Admin.findOne({ email: req.body.email });
-  console.log(" Admin fetched from DB:", admin);
-
+  const admin = await Admin.findOne({ email });
   if (!admin) {
-    console.log(" No admin found for this email.");
     return res.status(401).json({ success: false, message: "Invalid credentials" });
   }
 
-  const isMatch = await bcrypt.compare(req.body.password, admin.password);
-  console.log("🔹 Password match result:", isMatch);
-
+  const isMatch = await bcrypt.compare(password, admin.password);
   if (!isMatch) {
-    console.log(" Password did not match.");
     return res.status(401).json({ success: false, message: "Invalid credentials" });
   }
 
-  console.log(" Login validation successful — about to sign JWT");
+  //7 day token
   const token = jwt.sign({ id: admin._id }, config.JWT_SECRET, { expiresIn: "7d" });
+
+  /* Return token plain; client must add the Bearer prefix when sending it back */
   res.json({ success: true, token });
 });
 

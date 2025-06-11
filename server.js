@@ -25,12 +25,7 @@ connectDB();
 app.use("/api/payments", require("./routes/paymentRoutes"));
 app.use("/api/admin", require("./routes/authRoutes"));
 
-
-
-
-
 //login+register;
 app.use('/api/auth', require('./routes/authRoutes'));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-//  app.listen(PORT, '0.0.0.0', () => console.log(`Server running on http://192.168.1.142:${PORT}`));
