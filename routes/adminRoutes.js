@@ -8,36 +8,6 @@ const config   = require("../config/config");
 const router = express.Router();
 
 /* --------------------  ADMIN LOGIN  -------------------- */
-// router.post("/login", async (req, res) => {
-//   const { email, password } = req.body;
-
-//   const admin = await Admin.findOne({ email });
-//   if (!admin) {
-//     return res.status(401).json({ success: false, message: "Invalid credentials" });
-//   }
-
-//   const isMatch = await bcrypt.compare(password, admin.password);
-//   if (!isMatch) {
-//     return res.status(401).json({ success: false, message: "Invalid credentials" });
-//   }
-
-//   //7 day token
-//   const token = jwt.sign({ id: admin._id }, config.JWT_SECRET, { expiresIn: "15d" });
-
-//   /* Return token plain; client must add the Bearer prefix when sending it back */
-//   res.json({ success: true, token });
-// });
-
-
-
-
-
-
-
-
-
-
-
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
