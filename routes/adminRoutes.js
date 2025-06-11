@@ -11,15 +11,7 @@ const router = express.Router();
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  console.log("LOGIN-DEBUG email:", email);
   const admin = await Admin.findOne({ email });
-  console.log("LOGIN-DEBUG admin doc:", admin);
-
-   if (admin) {
-    const isMatch = await bcrypt.compare(password, admin.password);
-    console.log("LOGIN-DEBUG bcrypt match:", isMatch);
-  }
-  
   if (!admin) {
     return res.status(401).json({ success: false, message: "Invalid credentials" });
   }
