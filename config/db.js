@@ -4,6 +4,7 @@ const { MONGO_URI } = require("./config");
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGO_URI, {
+      dbName: "bitmax-payments",
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
