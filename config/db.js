@@ -3,6 +3,7 @@ const { MONGO_URI } = require("./config");
 
 const connectDB = async () => {
   try {
+    console.log("Full Mongo URI:", MONGO_URI);
     await mongoose.connect(MONGO_URI, {
       dbName: "bitmax-payments",
       useNewUrlParser: true,
