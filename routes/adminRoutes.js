@@ -11,7 +11,15 @@ const router = express.Router();
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
+  console.log("LOGIN-DEBUG email:", email);
   const admin = await Admin.findOne({ email });
+  console.log("LOGIN-DEBUG admin doc:", admin);
+
+   if (admin) {
+    const isMatch = await bcrypt.compare(password, admin.password);
+    console.log("LOGIN-DEBUG bcrypt match:", isMatch);
+  }
+  
   if (!admin) {
     return res.status(401).json({ success: false, message: "Invalid credentials" });
   }
@@ -22,13 +30,11 @@ router.post("/login", async (req, res) => {
   }
 
   //7 day token
-  const token = jwt.sign({ id: admin._id }, config.JWT_SECRET, { expiresIn: "7d" });
+  const token = jwt.sign({ id: admin._id }, config.JWT_SECRET, { expiresIn: "15d" });
 
   /* Return token plain; client must add the Bearer prefix when sending it back */
   res.json({ success: true, token });
 });
-
-
 
 /* --------------------  AUTH MIDDLEWARE  -------------------- */
 const verifyToken = (req, res, next) => {
@@ -61,5 +67,4 @@ router.get("/orders", verifyToken, async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to fetch orders" });
   }
 });
-
 module.exports = router;
