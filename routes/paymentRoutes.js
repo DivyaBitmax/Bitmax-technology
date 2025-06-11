@@ -164,8 +164,18 @@ router.post("/create-order", upload.single("document"), async (req, res) => {
 });
 
 
+
+// GET  /orders  
+router.get("/orders", async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json({ success: true, orders });
+  } catch (err) {
+    console.error("Fetch Orders Error:", err);
+    res.status(500).json({ success: false, message: "Could not fetch orders" });
+  }
+});
+
+
 // routes/payments.js
-
-
-
 module.exports = router;
