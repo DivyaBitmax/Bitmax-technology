@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
   console.log(" Password correct, proceeding to login");
   
   const token = jwt.sign({ id: admin._id }, config.JWT_SECRET, {
-    expiresIn: "15d",
+    expiresIn: "30d",
   });
 
   res.json({ success: true, token });
