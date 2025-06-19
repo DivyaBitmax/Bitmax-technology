@@ -23,7 +23,8 @@ connectDB();
 
 
 app.use("/api/payments", require("./routes/paymentRoutes"));
-app.use("/api/admin", require("./routes/authRoutes"));
+//admin panel
+app.use("/api/admin", require("./routes/adminRoutes"));
 
 //login+register;
 app.use('/api/auth', require('./routes/authRoutes'));

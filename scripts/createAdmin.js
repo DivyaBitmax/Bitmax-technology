@@ -1,33 +1,26 @@
-// scripts/createAdmin.js
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Admin = require("../models/admin");
-const { MONGO_URI } = require("../config/config.js");
+const { MONGO_URI } = require("../config/config");
 
-async function createAdmin() {
-  try {
-    console.log("Connecting to:", MONGO_URI);
-    await mongoose.connect(MONGO_URI);
+const email = "admin@example.com";         // 🔁 Replace with your email
+const password = "admin123";               // 🔁 Replace with your password
 
-    const email = "admin@example.com";
-    const password = "admin123";
-
-    // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email });
-    if (existingAdmin) {
-      console.log("Admin already exists");
-      process.exit();
+mongoose.connect(MONGO_URI)
+  .then(async () => {
+    const existing = await Admin.findOne({ email });
+    if (existing) {
+      console.log(" Admin already exists");
+      return mongoose.disconnect();
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await Admin.create({ email, password: hashedPassword });
-
-    console.log("Admin user created successfully");
-  } catch (error) {
-    console.error("Error creating admin:", error);
-  } finally {
-    mongoose.connection.close();
-  }
-}
-
-createAdmin();
+    const hashed = await bcrypt.hash(password, 10);
+    const admin = new Admin({ email, password: hashed });
+    await admin.save();
+    console.log(" Admin created successfully");
+    mongoose.disconnect();
+  })
+  .catch((err) => {
+    console.error(" Error creating admin:", err);
+    mongoose.disconnect();
+  });
