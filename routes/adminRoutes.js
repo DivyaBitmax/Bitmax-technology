@@ -1,22 +1,14 @@
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config/config");
+// routes/adminRoutes.js
+const express = require("express");
+const router = express.Router();
+const verifyToken = require("../middleware/adminMiddleware"); // token validator
+const { adminLogin } = require("../controllers/adminController");
 
-const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Access Denied: No token provided" });
-  }
+router.post("/login", adminLogin);
 
-  const token = authHeader.split(" ")[1];
+router.get("/dashboard", verifyToken, (req, res) => {
+  res.json({ message: "Welcome, Admin", admin: req.admin });
+});
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.admin = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
-};
-
-module.exports = verifyToken;
+module.exports = router;
