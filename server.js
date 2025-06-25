@@ -29,4 +29,8 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 //login+register;
 app.use('/api/auth', require('./routes/authRoutes'));
 
+//daily form submission chart;
+app.use("/api/stats", require("./routes/statsRoutes"));
+
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -14,6 +14,6 @@ const orderSchema = new mongoose.Schema({
   amount: Number,
   razorpayOrderId: String,
   isPaid: { type: Boolean, default: false },
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("Order", orderSchema);
