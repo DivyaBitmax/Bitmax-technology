@@ -74,3 +74,38 @@ exports.getTodaysSubmissions = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
+
+
+
+
+//  Total Paid Orders (all-time)
+exports.getTotalPayments = async (req, res) => {
+  try {
+    const totalPaid = await Order.countDocuments({ isPaid: true });
+    res.json({ success: true, totalPayments: totalPaid });
+  } catch (error) {
+    console.error("Error getting total payments:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+//  Today's Payments
+exports.getTodaysPayments = async (req, res) => {
+  try {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+
+    const todaysPaid = await Order.countDocuments({
+      isPaid: true,
+      createdAt: { $gte: start, $lte: end }
+    });
+
+    res.json({ success: true, todaysPayments: todaysPaid });
+  } catch (error) {
+    console.error("Error getting today's payments:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
